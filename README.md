@@ -1,14 +1,10 @@
 # d3meetup
 
-A Clojure library designed to ... well, that part is up to you.
-
-## Usage
-
-FIXME
+Working through garmin/strava data for d3 meetup.
 
 ## License
 
-Copyright © 2019 FIXME
+Copyright © 2019 TechAscent, LLC
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
