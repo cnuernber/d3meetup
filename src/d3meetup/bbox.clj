@@ -99,3 +99,47 @@
        (let [fmap (fit-filemap)]
          (tech-io/put-nippy! file-url fmap)))
      (tech-io/get-nippy file-url))))
+
+(defn ll-bbox->xy-bbox
+  [{:keys [latitude longitude]}]
+  [(:min longitude) (:min latitude)
+   (:max longitude) (:max latitude)])
+
+(defn area
+  [bbox]
+  (let [[l-x-min l-y-min l-x-max l-y-max] (ll-bbox->xy-bbox bbox)]
+    (* (- l-x-max l-x-min)
+       (- l-y-max l-y-min))))
+
+(defn intersection
+  [lhs-bbox rhs-bbox]
+  (let [[l-x-min l-y-min l-x-max l-y-max] (ll-bbox->xy-bbox lhs-bbox)
+        [r-x-min r-y-min r-x-max r-y-max] (ll-bbox->xy-bbox rhs-bbox)
+        x-overlap (max 0 (- (min l-x-max r-x-max) (max l-x-min r-x-min)))
+        y-overlap (max 0 (- (min l-y-max r-y-max) (max l-y-min r-y-min)))]
+    (* x-overlap y-overlap)))
+
+
+(defn union
+  [lhs-bbox rhs-bbox]
+  (- (+ (area lhs-bbox) (area rhs-bbox))
+     (intersection lhs-bbox rhs-bbox)))
+
+
+(defn intersection-over-union
+  [lhs-bbox rhs-bbox]
+  (/ (intersection lhs-bbox rhs-bbox)
+     (union lhs-bbox rhs-bbox)))
+
+
+(defn nearest-boxes
+  [fname]
+  (let [fmap (load-filemap)
+        target (get fmap fname)]
+    (when-not target
+      (throw (ex-info (format "Failed to find target %s" target)
+                      {:target target})))
+    (->> fmap
+         (pmap (fn [[fname bbox]]
+                [fname (intersection-over-union target bbox)]))
+         (sort-by second >))))
