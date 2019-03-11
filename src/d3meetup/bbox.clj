@@ -6,7 +6,8 @@
             [tech.ml.dataset.etl :as etl]
             [clojure.java.io :as io]
             [tech.parallel :as parallel]
-            [tech.io :as tech-io])
+            [tech.io :as tech-io]
+            [oz.core :as oz])
   (:import [java.io File]))
 
 (defn fit-file->dataset
@@ -50,15 +51,15 @@
 (defn run-pipeline
   [dataset & {:keys [target] :as options}]
   (-> (drop-missing dataset)
-      (etl/apply-pipeline load-pipeline options)))
+      (etl/apply-pipeline load-pipeline options)
+      :dataset))
 
 
 (def fname->bbox
   (parallel/memoize
    (fn [fname]
      (let [dataset (-> (fit-file->dataset fname)
-                       (run-pipeline)
-                       :dataset)]
+                       (run-pipeline))]
        {:latitude (-> (ds/column dataset :position-lat)
                       (ds-col/stats [:min :max]))
         :longitude (-> (ds/column dataset :position-long)
@@ -143,3 +144,36 @@
          (pmap (fn [[fname bbox]]
                 [fname (intersection-over-union target bbox)]))
          (sort-by second >))))
+
+
+(defn dataset->latlong
+  [dataset]
+  (-> (ds/select dataset (concat [:position-lat :position-long]) :all)
+      (ds/->flyweight)))
+
+
+(defn compare-paths
+  [fnames]
+  (let [values (->> fnames
+                    (pmap (fn [left-fname]
+                            (->> (-> (fit-file->dataset left-fname)
+                                     (run-pipeline)
+                                     dataset->latlong)
+                                 (map #(assoc % :file left-fname)))))
+                    (apply concat))]
+    (oz/view! [:vega-lite {:data {:values values}
+                           :width 800
+                           :height 600
+                           :projection {:type :albersUsa}
+                           :mark :circle
+                           :encoding {:latitude {:field (first lat-lon)
+                                                 :type :quantitative}
+                                      :longitude {:field (second lat-lon)
+                                                  :type :quantitative}
+                                      :color {:field :file
+                                              :type :nominal}}}])))
+
+
+(defn compare-file-paths
+  [fname]
+  (let [nearest ]))
