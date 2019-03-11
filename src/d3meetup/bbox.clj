@@ -159,13 +159,15 @@
                             (->> (-> (fit-file->dataset left-fname)
                                      (run-pipeline)
                                      dataset->latlong)
-                                 (map #(assoc % :file left-fname)))))
+                                 (map #(assoc % :file left-fname))
+                                 (take-nth 4))))
                     (apply concat))]
     (oz/view! [:vega-lite {:data {:values values}
                            :width 800
                            :height 600
                            :projection {:type :albersUsa}
-                           :mark :circle
+                           :mark {:type :circle
+                                  :opacity 0.4}
                            :encoding {:latitude {:field (first lat-lon)
                                                  :type :quantitative}
                                       :longitude {:field (second lat-lon)
@@ -176,4 +178,15 @@
 
 (defn compare-file-paths
   [fname]
-  (let [nearest ]))
+  (->> (nearest-boxes fname)
+       (take 4)
+       (map first)
+       compare-paths))
+
+
+(defn compare-random
+  []
+  (->> (keys (load-filemap))
+       shuffle
+       first
+       compare-file-paths))
