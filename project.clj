@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [techascent/tech.ml "0.25"]
+                 [org.clojure/tools.reader "1.3.2"]
                  [techascent/tech.opencv "3.5"]
                  [net.mikera/imagez "0.12.0"]
                  [metasoarous/oz "1.5.2"]

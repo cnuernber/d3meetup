@@ -7,7 +7,8 @@
             [clojure.core.matrix :as m]
             [clojure.set :as c-set]
             [oz.core :as oz]
-            [clojure.pprint :as pp])
+            ;; [clojure.pprint :as pp]
+            )
   (:import [java.time Duration]))
 
 
@@ -114,15 +115,16 @@
                              :spec {:data {:values effort-speed-height-time}
                                     :width 800
                                     :mark :point
-                                    :encoding {:x {:field :timestamp
-                                                   :type :quantitative
-                                                   :scale {:domain
-                                                           [(:min timestamp-data)
-                                                            (:max timestamp-data)]}}
-                                               :y {:field :altitude
-                                                   :type :quantitative
-                                                   :scale {:domain [(:min altitude-data)
-                                                                    (:max altitude-data)]}}}}}]]
+                                    :encoding
+                                    {:x {:field :timestamp
+                                         :type :quantitative
+                                         :scale {:domain
+                                                 [(:min timestamp-data)
+                                                  (:max timestamp-data)]}}
+                                     :y {:field :altitude
+                                         :type :quantitative
+                                         :scale {:domain [(:min altitude-data)
+                                                          (:max altitude-data)]}}}}}]]
                [:div
                 [:vega-lite {:repeat {:row [:power :speed :cadence]}
                              :spec {:data {:values effort-speed-height-time}
