@@ -166,8 +166,7 @@
                            :width 800
                            :height 600
                            :projection {:type :albersUsa}
-                           :mark {:type :circle
-                                  :opacity 0.4}
+                           :mark {:type :circle}
                            :encoding {:latitude {:field (first lat-lon)
                                                  :type :quantitative}
                                       :longitude {:field (second lat-lon)
