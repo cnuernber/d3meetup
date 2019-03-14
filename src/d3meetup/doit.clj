@@ -68,6 +68,7 @@
   (-> (drop-missing dataset)
       (etl/apply-pipeline load-pipeline options)
       :dataset
+      ;;Make handling the data in the browser sane.
       (#(ds/ds-take-nth 10 %))
       (etl/apply-pipeline '[[m= :speed-avg (rolling 20 :mean (col :speed-mph))]
                             [m= :power-avg (rolling 20 :mean (col :power))]
