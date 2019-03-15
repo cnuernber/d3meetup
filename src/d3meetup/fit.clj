@@ -185,7 +185,7 @@
 
 
 (defn decode
-  "Returns a sequence of records that will contain records."
+  "Returns a lazy sequence of records from the file."
   [fname]
   (let [gzip? (= "gz" (FilenameUtils/getExtension fname))
         record-chan (async/chan 64)
