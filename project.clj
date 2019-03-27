@@ -6,5 +6,7 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [techascent/tech.ml "0.27"]
                  [org.clojure/tools.reader "1.3.2"]
-                 [metasoarous/oz "1.5.2"]]
+                 [metasoarous/oz "1.6.0-alpha2"]
+                 [cnuernber/garmin-fit-clj "0.1"]]
+
   :resource-paths ["resources/fit.jar"])

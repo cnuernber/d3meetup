@@ -6,8 +6,7 @@
             [tech.ml.dataset.etl :as etl]
             [clojure.java.io :as io]
             [tech.parallel :as parallel]
-            [tech.io :as tech-io]
-            [oz.core :as oz])
+            [tech.io :as tech-io])
   (:import [java.io File]))
 
 (defn fit-file->dataset
@@ -162,17 +161,17 @@
                                  (map #(assoc % :file left-fname))
                                  (take-nth 4))))
                     (apply concat))]
-    (oz/view! [:vega-lite {:data {:values values}
-                           :width 800
-                           :height 600
-                           :projection {:type :albersUsa}
-                           :mark {:type :circle}
-                           :encoding {:latitude {:field (first lat-lon)
-                                                 :type :quantitative}
-                                      :longitude {:field (second lat-lon)
-                                                  :type :quantitative}
-                                      :color {:field :file
-                                              :type :nominal}}}])))
+    [:vega-lite {:data {:values values}
+                 :width 800
+                 :height 600
+                 :projection {:type :albersUsa}
+                 :mark {:type :circle}
+                 :encoding {:latitude {:field (first lat-lon)
+                                       :type :quantitative}
+                            :longitude {:field (second lat-lon)
+                                        :type :quantitative}
+                            :color {:field :file
+                                    :type :nominal}}}]))
 
 
 (defn compare-file-paths

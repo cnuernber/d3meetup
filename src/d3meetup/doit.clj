@@ -1,14 +1,12 @@
 (ns d3meetup.doit
-  (:require [d3meetup.fit :as fit]
+  (:require [cnuernber.garmin-fit :as fit]
             [tech.ml.dataset :as ds]
             [tech.ml.dataset.column :as ds-col]
             [tech.ml.dataset.etl :as etl]
             [tech.compute.tensor.functional :as tens-fun]
             [clojure.core.matrix :as m]
             [clojure.set :as c-set]
-            [oz.core :as oz]
-            ;; [clojure.pprint :as pp]
-            )
+            [oz.core :as oz])
   (:import [java.time Duration]))
 
 
