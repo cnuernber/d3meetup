@@ -1,5 +1,5 @@
 (ns d3meetup.bbox
-  (:require [d3meetup.fit :as fit]
+  (:require [cnuernber.garmin-fit :as fit]
             [tech.ml.dataset :as ds]
             [tech.ml.dataset.column :as ds-col]
             [clojure.core.matrix :as m]
