@@ -2,7 +2,7 @@
 
 A quick walkthrough garmin/strava data for the local d3 meetup.
 
-A quick view of the results is available through [nbviewer](https://nbviewer.jupyter.org/github/cnuernber/d3meetup/blob/master/walkthrough.ipynb).
+A quick view of the results is available through [nbviewer](https://nbviewer.jupyter.org/github/cnuernber/d3meetup/blob/3b9e33d6e1b622983bef9a0a9983c868940b378f/walkthrough.ipynb).
 
 # Usage
 
