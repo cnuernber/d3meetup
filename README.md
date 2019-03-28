@@ -12,7 +12,7 @@ If you want to actually run the clojure repl then install [leiningen](https://le
 
 The repl experience via pure lein repl is rough so you have can install [things](https://lambdaisland.com/guides/clojure-repls/clojure-repls) to help you with this or you can jump into intelliJ, install cursive, and go from there.
 
-Assuming you have clojure installed and the [jupyter notebook system](https://jupyter.org/install) installed, here is a quick star:
+Assuming you have clojure installed and the [jupyter notebook system](https://jupyter.org/install) installed, here is a quick start:
 
 ```bash
 git submodule update --recursive --init
