@@ -6,6 +6,14 @@ A quick view of the results is available through [nbviewer](https://nbviewer.jup
 
 # Usage
 
+First install java 8 and then clojure.  Java 8 is system specific but I recommend installing clojure from [here](https://clojure.org/guides/getting_started).
+
+If you want to actually run the clojure repl then install [leiningen](https://leiningen.org/) and run 'lein repl'.
+
+The repl experience via pure lein repl is rough so you have can install [things](https://lambdaisland.com/guides/clojure-repls/clojure-repls) to help you with this or you can jump into intelliJ, install cursive, and go from there.
+
+Assuming you have clojure installed and the [jupyter notebook system](https://jupyter.org/install) installed, here is a quick star:
+
 ```bash
 git submodule update --recursive --init
 
