@@ -7,6 +7,9 @@ A quick view of the results is available through [nbviewer](https://nbviewer.jup
 # Usage
 
 ```bash
+git submodule update --recursive --init
+
+
 scripts/get-data.sh
 
 pushd clojupyter
