@@ -15,6 +15,8 @@ scripts/get-data.sh
 pushd clojupyter
 make && make install
 popd
+
+jupyter-notebook
 ```
 
 If you like, you can run a condensed form of the project from the repl.  Just open [doit.clj](src/d3meetup/doit.clj).
