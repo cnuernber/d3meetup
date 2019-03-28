@@ -116,103 +116,113 @@
   (.toString dur))
 
 (def chart-width 600)
+(def chart-height 150)
 
-(def view-ds [:div
-              [:h2 (format "Behold - %s - %s"
-                           (ds/dataset-name processed-ds)
-                           (duration->str (ds-duration processed-ds)))]
-              [:h3 "Dashboard"]
-              [:vega-lite {:data {:values all-the-data}
-                           :vconcat [{:projection {:type :albersUsa}
-                                      :width chart-width
-                                      :mark :circle
-                                      :transform [{:filter {:selection :times}}]
-                                      :encoding {:latitude {:field (first lat-lon)
-                                                            :type :quantitative}
-                                                 :longitude {:field (second lat-lon)
-                                                             :type :quantitative}
-                                                 :color {:field :altitude
-                                                         :type :quantitative
-                                                         :scale {:range [:darkblue :lightblue]}}}}
-
-                                     {:mark :point
-                                      :width chart-width
+(def view-ds
+  [:div
+   [:h2 (format "Behold - %s - %s"
+                (ds/dataset-name processed-ds)
+                (duration->str (ds-duration processed-ds)))]
+   [:h3 "Dashboard"]
+   [:vega-lite {:data {:values all-the-data}
+                :vconcat [{:projection {:type :albersUsa}
+                           :width chart-width
+                           :height chart-height
+                           :mark :circle
+                           :transform [{:filter {:selection :times}}]
+                           :encoding {:latitude {:field (first lat-lon)
+                                                 :type :quantitative}
+                                      :longitude {:field (second lat-lon)
+                                                  :type :quantitative}
+                                      :color {:field :altitude
+                                              :type :quantitative
+                                              :scale {:range [:darkblue :lightblue]}}}}
+                          {
+                           :hconcat
+                           [{:width (/ chart-width 2)
+                             :height chart-height
+                             :mark :point
+                             :selection {:times {:type :interval}}
+                             :encoding
+                             {:x {:field :minutes-from-start
+                                  :type :quantitative
+                                  :scale {:domain
+                                          [(:min minutes-range)
+                                           (:max minutes-range)]}}
+                              :y {:field :altitude
+                                  :type :quantitative
+                                  :scale {:domain [(:min altitude-data)
+                                                   (:max altitude-data)]}}
+                              :color {:field :altitude
+                                      :type :quantitative
+                                      :scale {:range [:darkblue :lightblue]}}}}
+                            {:layer [{:width (/ chart-width 2)
+                                      :height chart-height
+                                      :mark :point
                                       :selection {:times {:type :interval}}
-                                      :encoding
-                                      {:x {:field :minutes-from-start
-                                           :type :quantitative
-                                           :scale {:domain
-                                                   [(:min minutes-range)
-                                                    (:max minutes-range)]}}
-                                       :y {:field :altitude
-                                           :type :quantitative
-                                           :scale {:domain [(:min altitude-data)
-                                                            (:max altitude-data)]}}
-                                       :color {:field :altitude
-                                               :type :quantitative
-                                               :scale {:range [:darkblue :lightblue]}}}}
-                                     {:layer [{:mark :point
-                                               :width chart-width
-                                               :selection {:times {:type :interval}}
-                                               :encoding {:x {:field :minutes-from-start
-                                                              :type :quantitative
-                                                              :scale {:domain
-                                                                      [(:min minutes-range)
-                                                                       (:max minutes-range)]}}
-                                                          :y {:field :speed-mph
-                                                              :type :quantitative}}}
-                                              {:mark {:type :line
-                                                      :color :yellow}
-                                               :width chart-width
-                                               :encoding {:x {:field :minutes-from-start
-                                                              :type :quantitative
-                                                              :scale {:domain
-                                                                      [(:min minutes-range)
-                                                                       (:max minutes-range)]}}
-                                                          :y {:field :speed-avg
-                                                              :type :quantitative}}}]}
-                                     {:layer [{:mark :point
-                                               :width chart-width
-                                               :selection {:times {:type :interval}}
-                                               :encoding {:x {:field :minutes-from-start
-                                                              :type :quantitative
-                                                              :scale {:domain
-                                                                      [(:min minutes-range)
-                                                                       (:max minutes-range)]}}
-                                                          :y {:field :power
-                                                              :type :quantitative}}}
-                                              {:mark {:type :line
-                                                      :color :yellow}
-                                               :width chart-width
-                                               :encoding {:x {:field :minutes-from-start
-                                                              :type :quantitative
-                                                              :scale {:domain
-                                                                      [(:min minutes-range)
-                                                                       (:max minutes-range)]}}
-                                                          :y {:field :power-avg
-                                                              :type :quantitative}}}]}
-                                     {:layer [{:mark :point
-                                               :width chart-width
-                                               :selection {:times {:type :interval}}
-                                               :encoding {:x {:field :minutes-from-start
-                                                              :type :quantitative
-                                                              :scale {:domain
-                                                                      [(:min minutes-range)
-                                                                       (:max minutes-range)]}}
-                                                          :y {:field :cadence
-                                                              :type :quantitative}}}
-                                              {:mark {:type :line
-                                                      :color :yellow}
-                                               :width chart-width
-                                               :encoding {:x {:field :minutes-from-start
-                                                              :type :quantitative
-                                                              :scale {:domain
-                                                                      [(:min minutes-range)
-                                                                       (:max minutes-range)]}}
-                                                          :y {:field :cadence-avg
-                                                              :type :quantitative}}}]}
+                                      :encoding {:x {:field :minutes-from-start
+                                                     :type :quantitative
+                                                     :scale {:domain
+                                                             [(:min minutes-range)
+                                                              (:max minutes-range)]}}
+                                                 :y {:field :speed-mph
+                                                     :type :quantitative}}}
+                                     {:mark {:type :line
+                                             :color :yellow}
+                                      :encoding {:x {:field :minutes-from-start
+                                                     :type :quantitative
+                                                     :scale {:domain
+                                                             [(:min minutes-range)
+                                                              (:max minutes-range)]}}
+                                                 :y {:field :speed-avg
+                                                     :type :quantitative}}}]}]}
+                          {:hconcat
+                           [{:layer [{:width (/ chart-width 2)
+                                      :height chart-height
+                                      :mark :point
+                                    :selection {:times {:type :interval}}
+                                    :encoding {:x {:field :minutes-from-start
+                                                   :type :quantitative
+                                                   :scale {:domain
+                                                           [(:min minutes-range)
+                                                            (:max minutes-range)]}}
+                                               :y {:field :power
+                                                   :type :quantitative}}}
+                                     {:width (/ chart-width 2)
+                                      :height chart-height
+                                      :mark {:type :line
+                                           :color :yellow}
+                                    :encoding {:x {:field :minutes-from-start
+                                                   :type :quantitative
+                                                   :scale {:domain
+                                                           [(:min minutes-range)
+                                                            (:max minutes-range)]}}
+                                               :y {:field :power-avg
+                                                   :type :quantitative}}}]}
+                            {:layer [{:width (/ chart-width 2)
+                                      :height chart-height
+                                      :mark :point
+                                      :selection {:times {:type :interval}}
+                                      :encoding {:x {:field :minutes-from-start
+                                                     :type :quantitative
+                                                     :scale {:domain
+                                                             [(:min minutes-range)
+                                                              (:max minutes-range)]}}
+                                                 :y {:field :cadence
+                                                     :type :quantitative}}}
+                                     {:width (/ chart-width 2)
+                                      :height chart-height
+                                      :mark {:type :line
+                                             :color :yellow}
+                                      :encoding {:x {:field :minutes-from-start
+                                                     :type :quantitative
+                                                     :scale {:domain
+                                                             [(:min minutes-range)
+                                                              (:max minutes-range)]}}
+                                                 :y {:field :cadence-avg
+                                                     :type :quantitative}}}]}]}
 
-                                     ]}]])
+                          ]}]])
 
 
 (oz/view! view-ds)
